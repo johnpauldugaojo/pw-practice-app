@@ -55,3 +55,10 @@ test("parametized methods", async ({ page }) => {
   await pm.datepickerPage().selectCommonDatePickerDateFromToday(10);
   await pm.datepickerPage().selectDatePickerWithRange(3, 15);
 });
+
+test.only("Testing with argos ci", async ({ page }) => {
+  const pm = new PageManager(page);
+  // const navigateTo = new NavigationPage(page); //create a variable to store the class //change using pageManager
+  await pm.navigateTo().formLayoutsPage();
+  await pm.navigateTo().datePickerPage();
+});

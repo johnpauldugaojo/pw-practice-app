@@ -5,7 +5,7 @@ require("dotenv").config();
 
 export default defineConfig<TestOptions>({
   timeout: 40000,
-  globalTimeout: 60000,
+  // globalTimeout: 60000,
   expect: {
     timeout: 2000,
     // toHaveScreenshot: { maxDiffPixels: 150 },
@@ -17,13 +17,6 @@ export default defineConfig<TestOptions>({
     ["junit", { outputFile: "test-results/junitReport.xml" }],
     ["html"],
   ],
-
-  webServer: {
-    command: "npm run start",
-    url: "http://localhost:4200/",
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
-  },
 
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */

@@ -18,6 +18,13 @@ export default defineConfig<TestOptions>({
     ["html"],
   ],
 
+  webServer: {
+    command: "npm run start",
+    url: "http://localhost:4200/",
+    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI,
+  },
+
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: "http://localhost:4200/",

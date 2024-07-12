@@ -1,11 +1,12 @@
 import { test, expect } from "@playwright/test";
 import { PageManager } from "../page-objects/pageManager";
+import { faker } from "@faker-js/faker";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+  await page.goto("/");
 });
 
-test("navigate to form page", async ({ page }) => {
+test("navigate to form page @smoke", async ({ page }) => {
   const pm = new PageManager(page);
   // const navigateTo = new NavigationPage(page); //create a variable to store the class //change using pageManager
   await pm.navigateTo().formLayoutsPage();
@@ -18,6 +19,10 @@ test("navigate to form page", async ({ page }) => {
 test("parametized methods", async ({ page }) => {
   // const navigateTo = new NavigationPage(page); refactor ung pageManager
   const pm = new PageManager(page);
+  const randomFullName = faker.person.fullName();
+  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(
+    100
+  )}@gmail.com`;
   // const onFormsLayoutPage = new FormLayoutsPage(page);
   // const onDatePickerPage = new DatePickerPage(page);
 
@@ -25,17 +30,26 @@ test("parametized methods", async ({ page }) => {
   await pm
     .onFormsLayoutsPage()
     .submitUsingTheGridFormWithCredentialsAndSelectOptions(
-      "test@test.com",
-      "Test1234",
-      "Option 1"
+      process.env.USERNAME,
+      process.env.PASSWORD,
+      "Option 2"
     );
+  await page.screenshot({ path: "screenshots/formLayoutsPage.png" });
+
+  // const buffer = await page.screenshot();
+  // console.log(buffer.toString("base64"));
   await pm
     .onFormsLayoutsPage()
     .submitInlineFormWithNameEmailAndCheckbox(
-      "Jayps Dugaojo",
-      "Jaypsdugaojo@gmail.com",
+      randomFullName,
+      randomEmail,
       false
     );
+
+  await page.locator("nb-card", {
+    hasText: "Inline form",
+  });
+  // .screenshot({ path: "screenshots/inlineForm.png" });
 
   await pm.navigateTo().datePickerPage();
   await pm.datepickerPage().selectCommonDatePickerDateFromToday(10);

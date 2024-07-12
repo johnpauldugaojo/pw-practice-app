@@ -1,17 +1,20 @@
 import { test, expect } from "@playwright/test";
 
-
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+  await page.goto("/");
 });
 
-test.describe("Form layout page", () => {
+test.describe("Form layout page @block", () => {
+  test.describe.configure({ retries: 0 });
   test.beforeEach(async ({ page }) => {
     await page.getByText("Forms").click();
     await page.getByText("Form Layout").click();
   });
 
   test("Input Fields", async ({ page }) => {
+    /* if (testInfo.retry) {
+      //do someting ex. clean up db
+    }*/
     const usingTheGridComponent = page
       .locator("nb-card", {
         hasText: "Using the Grid",
@@ -21,9 +24,7 @@ test.describe("Form layout page", () => {
     await usingTheGridComponent.fill("jdoe@gmail.com");
     //clear the input words
     await usingTheGridComponent.clear();
-    await usingTheGridComponent.pressSequentially("jaypsdugaojo@gmail.com", {
-      delay: 100,
-    });
+    await usingTheGridComponent.pressSequentially("jaypsdugaojo@gmail.com");
 
     // generic assertion
     const inputValue = await usingTheGridComponent.inputValue();
@@ -33,7 +34,7 @@ test.describe("Form layout page", () => {
     await expect(usingTheGridComponent).toHaveValue("jaypsdugaojo@gmail.com");
   });
 
-  test("Radio Buttons", async ({ page }) => {
+  test.only("Radio Buttons", async ({ page }) => {
     const usingTheGridForm = page.locator("nb-card", {
       hasText: "Using the Grid",
     });
@@ -46,6 +47,8 @@ test.describe("Form layout page", () => {
     const radioStatus = await usingTheGridForm
       .getByRole("radio", { name: "Option 1" })
       .isChecked();
+
+    // await expect(usingTheGridForm).toHaveScreenshot(); --> use for Visual Testing
 
     expect(radioStatus).toBeTruthy();
 
@@ -66,7 +69,7 @@ test.describe("Form layout page", () => {
         .isChecked()
     ).toBeFalsy();
 
-    // verify the option 2 is checked
+    //  verify the option 2 is checked
     expect(
       await usingTheGridForm
         .getByRole("radio", { name: "Option 2" })

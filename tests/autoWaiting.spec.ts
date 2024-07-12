@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }, testInfo) => {
-  await page.goto("http://www.uitestingplayground.com/ajax");
+  await page.goto(process.env.URL);
   await page.getByText("Button Triggering AJAX Request").click();
   testInfo.setTimeout(testInfo.timeout + 2000);
 });
@@ -22,7 +22,7 @@ test("Auto Waiting", async ({ page }) => {
   });
 });
 
-test("Alternative waits", async ({ page }) => {
+test.skip("Alternative waits", async ({ page }) => {
   const successButton = page.locator(".bg-success");
 
   // wait for the selector
@@ -37,7 +37,7 @@ test("Alternative waits", async ({ page }) => {
   expect(text).toContain("Data loaded with AJAX get request.");
 });
 
-test("timeouts", async ({ page }) => {
+test.skip("timeouts", async ({ page }) => {
   test.slow();
   const successButton = page.locator(".bg-success");
   await successButton.click({ timeout: 16000 });

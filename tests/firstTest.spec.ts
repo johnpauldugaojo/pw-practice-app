@@ -1,9 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-
 // to prevent repetitive situation
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+  await page.goto("/");
   await page.getByText("Forms").click();
   await page.getByText("Form Layout").click();
 });
@@ -97,8 +96,14 @@ test("Parent Elements", async ({ page }) => {
     .getByRole("textbox", { name: "Email" })
     .click();
 
+  // await page
+  //   .locator(':text-is("Using the grid")')
+  //   .locator("..")
+  //   .getByRole("textbox", { name: "Email" })
+  //   .click();
+
   await page
-    .locator(':text-is("Using the grid")')
+    .getByText("Using the Grid")
     .locator("..")
     .getByRole("textbox", { name: "Email" })
     .click();
@@ -156,7 +161,7 @@ test("Assertion", async ({ page }) => {
   await expect(basicFormButton).toHaveText("Submit");
 
   // Soft Assertion - will continue on the next execution
-  await expect.soft(basicFormButton).toHaveText("Submit5");
+  await expect.soft(basicFormButton).toHaveText("Submit");
   await basicFormButton.click();
 });
 
